@@ -1,5 +1,6 @@
 package ufpr.veiga.wallet.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
@@ -21,11 +22,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun cadastro(view: View) {
-
+        startActivity(Intent(this, CadastroActivity::class.java))
     }
 
     fun extrato(view: View) {
-
+        startActivity(Intent(this, ExtratoActivity::class.java))
     }
 
 
