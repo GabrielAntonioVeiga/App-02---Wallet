@@ -3,6 +3,8 @@ package ufpr.veiga.wallet.database
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import ufpr.veiga.wallet.model.EnClassificacaoOperacao
+import ufpr.veiga.wallet.model.Transacao
 
 class DBHelper(context: Context): SQLiteOpenHelper(context, "wallet.db", null, 1) {
     override fun onCreate(db: SQLiteDatabase) {
@@ -22,4 +24,31 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "wallet.db", null, 1
         onCreate(db)
     }
 
+    fun listAll(): List<Transacao> {
+        val db = this.readableDatabase
+        val cursor = db.query("transactions", arrayOf("id", "type", "description", "value"),
+            null, null, null, null, null)
+
+        val transactions = ArrayList<Transacao>()
+        with(cursor) {
+            while (moveToNext()) {
+                val id: Int = getInt(getColumnIndexOrThrow("id"))
+                val type: String = getString(getColumnIndexOrThrow("type"))
+                val description: String = getString(getColumnIndexOrThrow("description"))
+                val value: Double = getDouble(getColumnIndexOrThrow("value"))
+
+                val transaction = Transacao(
+                    id = id,
+                    tipo = EnClassificacaoOperacao.valueOf(type),
+                    descricao = description,
+                    valor = value
+                )
+
+                transactions.add(transaction)
+            }
+        }
+        cursor.close()
+        db.close()
+        return transactions
+    }
 }
