@@ -7,10 +7,16 @@ import android.database.sqlite.SQLiteOpenHelper
 import ufpr.veiga.wallet.model.EnClassificacaoOperacao
 import ufpr.veiga.wallet.model.Transacao
 
-class DBHelper(context: Context): SQLiteOpenHelper(context, "wallet.db", null, 1) {
+class DBHelper(context: Context): SQLiteOpenHelper(context, DATABASE, null, VERSION) {
+    companion object{
+        const val DATABASE = "wallet.db"
+        const val VERSION = 1
+        const val TABLE_NAME = "transactions"
+    }
+
     override fun onCreate(db: SQLiteDatabase) {
         val sql = """
-            CREATE TABLE transactions (
+            CREATE TABLE $TABLE_NAME (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 tipo TEXT NOT NULL,
                 descricao TEXT NOT NULL,
@@ -21,7 +27,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "wallet.db", null, 1
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        db.execSQL("DROP TABLE IF EXISTS transactions")
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
         onCreate(db)
     }
 
@@ -32,12 +38,12 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "wallet.db", null, 1
             put("descricao", transacao.descricao)
             put("valor", transacao.valor)
         }
-        return db.insert("transactions", null, values)
+        return db.insert(TABLE_NAME, null, values)
     }
 
     fun listAll(): List<Transacao> {
         val db = this.readableDatabase
-        val cursor = db.query("transactions", arrayOf("id", "tipo", "descricao", "valor"),
+        val cursor = db.query(TABLE_NAME, arrayOf("id", "tipo", "descricao", "valor"),
             null, null, null, null, null)
 
         val transactions = ArrayList<Transacao>()
