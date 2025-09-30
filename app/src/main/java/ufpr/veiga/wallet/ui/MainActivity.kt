@@ -23,12 +23,10 @@ class MainActivity : AppCompatActivity() {
 
     fun cadastro(view: View) {
         startActivity(Intent(this, CadastroActivity::class.java))
-        finish()
     }
 
     fun extrato(view: View) {
         startActivity(Intent(this, ExtratoActivity::class.java))
-        finish()
     }
 
 
