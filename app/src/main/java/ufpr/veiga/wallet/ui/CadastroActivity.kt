@@ -1,5 +1,6 @@
 package ufpr.veiga.wallet.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
@@ -63,5 +64,12 @@ class CadastroActivity : AppCompatActivity() {
             )
         )
         Toast.makeText(this, "Transação salva!", Toast.LENGTH_SHORT).show()
+        spinner.setSelection(0)
+        descricao.text.clear()
+        valor.text.clear()
+
+    }
+    fun voltar(view: View){
+        startActivity(Intent(this, MainActivity::class.java))
     }
 }
